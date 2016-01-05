@@ -1,0 +1,21 @@
+---
+zh-TW:
+  spree:
+    chimpy_mailer:
+      subscribe_email:
+        subject: mailchimp電子報訂閱回報
+    chimpy:
+      success: 成功
+      fail: 失敗
+      exist: 已加入
+      subscribed_label: 訂閱電子報
+      admin_subscribed_label: 訂閱電子報
+      subscribe_title: 訂閱電子報
+      subscribed: 訂閱
+      uncategorized: 未分類
+      email:
+        label: Email
+        placeholder: 輸入Email
+      subscriber:
+        success: 已經成功加入
+        failure: 發生問題

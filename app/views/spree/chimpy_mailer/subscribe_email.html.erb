@@ -1,0 +1,11 @@
+<div>
+  <div><span><%=Spree.t(:total)%>:&nbsp;</span><span><%= (@success_count + @fail_count + @exist_count)%></span></div>
+  <div><span><%=Spree.t("chimpy.success")%>:&nbsp;</span><span><%=@success_count%><</span></div>
+  <div><span><%=Spree.t("chimpy.fail")%>:&nbsp;</span><span><%=@fail_count%><</span></div>
+  <div><span><%=Spree.t("chimpy.exist")%>:&nbsp;</span><span><%=@exist_count%><</span></div>
+  <br/>
+  <div><%=Spree.t("chimpy.fail")%>:</div>
+  <% @fail_list.each do |fail|%>
+      <div><%= fail %></div>
+  <% end %>
+</div>

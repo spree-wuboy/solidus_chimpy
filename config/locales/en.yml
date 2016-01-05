@@ -1,7 +1,13 @@
 ---
 en:
   spree:
+    chimpy_mailer:
+      subscribe_email:
+        subject: mailchimp subscribe report
     chimpy:
+      success: success
+      fail: fail
+      exist: exist
       subscribed_label: Sign me up to the newsletter
       admin_subscribed_label: Subscribed to newsletter
       subscribe_title: Subscribe to our newsletter

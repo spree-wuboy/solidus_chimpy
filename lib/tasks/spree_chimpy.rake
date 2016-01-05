@@ -62,10 +62,10 @@ namespace :spree_chimpy do
       end
 
       case response[:status]
-      when "subscribed"
-        Spree.user_class.where(email: email).update_all(subscribed: true)
-      when "unsubscribed"
-        Spree.user_class.where(email: email).update_all(subscribed: false)
+        when "subscribed"
+          Spree.user_class.where(email: email).update_all(subscribed: true)
+        when "unsubscribed"
+          Spree.user_class.where(email: email).update_all(subscribed: false)
       end
     end
   end
@@ -78,17 +78,62 @@ namespace :spree_chimpy do
       Spree::Chimpy.list.subscribe(email)
     end
   end
-  
+
   desc 'subscribe all users with mailchimp'
   task subscribe: :environment do
     emails = Spree.user_class.pluck(:email)
     puts "subscribe all users"
+    success_count = 0
+    fail_count = 0
+    exist_count = 0
+    fail_list = []
     emails.each do |email|
       begin
-        response = Spree::Chimpy.list.subscribe(email)
-      rescue Exception => e
-        puts("error=#{e.inspect}")
-      end  
+        info = Spree::Chimpy.list.info(email)
+        if info.blank?
+          response = Spree::Chimpy.list.subscribe(email)
+          puts "add #{email}"
+          success_count = success_count + 1
+        else
+          puts "exist #{email}"
+          exist_count = exist_count + 1
+        end
+      rescue Exception => e1
+        puts "fail #{email} 1 times"
+        puts("error=#{e1.inspect}")
+        begin
+          info = Spree::Chimpy.list.info(email)
+          if info.blank?
+            response = Spree::Chimpy.list.subscribe(email)
+            puts "add #{email}"
+            success_count = success_count + 1
+          else
+            puts "exist #{email}"
+            exist_count = exist_count + 1
+          end
+        rescue Exception => e2
+          puts "fail #{email} 2 times"
+          puts("error=#{e2.inspect}")
+          begin
+            info = Spree::Chimpy.list.info(email)
+            if info.blank?
+              response = Spree::Chimpy.list.subscribe(email)
+              puts "add #{email}"
+              success_count = success_count + 1
+            else
+              puts "exist #{email}"
+              exist_count = exist_count + 1
+            end
+          rescue Exception => e3
+            puts "fail #{email} 3 times"
+            puts("error=#{e3.inspect}")
+            fail_list.push(email)
+            fail_count = fail_count + 1
+          end
+        end
+      end
     end
-  end  
+
+    Spree::ChimpyMailer.subscribe_email(success_count, fail_count, exist_count, fail_list).deliver_later
+  end
 end
