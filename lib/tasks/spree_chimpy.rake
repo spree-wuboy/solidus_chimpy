@@ -101,6 +101,10 @@ namespace :spree_chimpy do
       rescue Exception => e1
         puts "fail #{email} 1 times"
         puts("error=#{e1.inspect}")
+        if email.end_with?(".con")
+          puts("fix email=#{email}")
+          Spree.user_class.where(:email => email).update_all(:email => "#{email[0, email.length-1]}m")
+        end
         begin
           info = Spree::Chimpy.list.info(email)
           if info.blank?
