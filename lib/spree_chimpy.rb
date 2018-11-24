@@ -2,6 +2,7 @@ require 'spree_core'
 require 'spree/chimpy/engine'
 require 'spree/chimpy/subscription'
 require 'spree/chimpy/workers/delayed_job'
+require 'spree/chimpy/workers/sidekiq'
 require 'mailchimp'
 require 'coffee_script'
 
